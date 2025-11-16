@@ -1,0 +1,86 @@
+config:
+  target: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
+  processor: "./functions.js"
+  phases:
+    - duration: 600  # 10 mins continuous testing
+      arrivalRate: 5 # 10
+      name: "Sustained load"
+  variables:
+    ecs_base: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
+
+scenarios:
+  # Lightweight API - 44.8% of traffic
+  - name: "Lightweight Lambda"
+    weight: 22
+    flow:
+      - function: "setLightweightPayload"
+      - post:
+          url: "/lightweight"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+          
+  - name: "Lightweight ECS"
+    weight: 23
+    flow:
+      - function: "setLightweightPayload"
+      - post:
+          url: "{{ ecs_base }}/lightweight/process"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+
+  # Thumbnail Processing - 33.6% of traffic
+  - name: "Thumbnail Lambda"
+    weight: 17
+    flow:
+      - function: "setThumbnailPayload"
+      - post:
+          url: "/thumbnail"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+          
+  - name: "Thumbnail ECS"
+    weight: 17
+    flow:
+      - function: "setThumbnailPayload"
+      - post:
+          url: "{{ ecs_base }}/thumbnail/process"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+
+  # Medium Processing - 18.3% of traffic
+  - name: "Medium Lambda"
+    weight: 9
+    flow:
+      - function: "setMediumPayload"
+      - post:
+          url: "/medium"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+          
+  - name: "Medium ECS"
+    weight: 9
+    flow:
+      - function: "setMediumPayload"
+      - post:
+          url: "{{ ecs_base }}/medium/process"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+
+  # Heavy Processing - 3.4% of traffic
+  - name: "Heavy Lambda"
+    weight: 2
+    flow:
+      - function: "setHeavyPayload"
+      - post:
+          url: "/heavy"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"
+          
+  - name: "Heavy ECS"
+    weight: 2
+    flow:
+      - function: "setHeavyPayload"
+      - post:
+          url: "{{ ecs_base }}/heavy/process"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"

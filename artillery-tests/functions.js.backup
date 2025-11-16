@@ -1,0 +1,96 @@
+const fs = require('fs');
+const path = require('path');
+
+// Generate unique request ID
+function generateRequestId() {
+  return `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+// Generate payload based on workload type
+function generatePayload(workloadType) {
+  const requestId = generateRequestId();
+  
+  let payload = {
+    request_id: requestId,
+    workload_type: workloadType,
+    timestamp: new Date().toISOString()
+  };
+  
+  // Add workload-specific data
+  switch(workloadType) {
+    case 'lightweight_api':
+      payload.payload = { user: 'test', action: 'validate' };
+      break;
+    case 'thumbnail_processing':
+      // Generate ~150KB base64 image data
+      payload.payload = Buffer.from('x'.repeat(150 * 1024)).toString('base64');
+      break;
+    case 'medium_processing':
+      // Generate ~5MB data
+      payload.payload = Buffer.from('x'.repeat(5 * 1024 * 1024)).toString('base64');
+      break;
+    case 'heavy_processing':
+      // Generate ~8MB data
+      payload.payload = Buffer.from('x'.repeat(8 * 1024 * 1024)).toString('base64');
+      break;
+  }
+  
+  return payload;
+}
+
+// Set payload for lightweight requests
+function setLightweightPayload(requestParams, context, ee, next) {
+  context.vars.payload = generatePayload('lightweight_api');
+  return next();
+}
+
+// Set payload for thumbnail requests
+function setThumbnailPayload(requestParams, context, ee, next) {
+  context.vars.payload = generatePayload('thumbnail_processing');
+  return next();
+}
+
+// Set payload for medium requests
+function setMediumPayload(requestParams, context, ee, next) {
+  context.vars.payload = generatePayload('medium_processing');
+  return next();
+}
+
+// Set payload for heavy requests
+function setHeavyPayload(requestParams, context, ee, next) {
+  context.vars.payload = generatePayload('heavy_processing');
+  return next();
+}
+
+// Log response data
+function logResponse(requestParams, response, context, ee, next) {
+  if (response.body) {
+    try {
+      const data = JSON.parse(response.body);
+      const logEntry = {
+        request_id: data.request_id,
+        platform: data.platform,
+        workload_type: data.workload_type,
+        timestamp: data.timestamp,
+        http_status: response.statusCode,
+        response_time_ms: response.timings.phases.total,
+        metrics: data.metrics
+      };
+      
+      // Append to log file
+      const logFile = path.join(__dirname, '../data-output', `${data.platform}_${data.workload_type}_${new Date().toISOString().split('T')[0]}.jsonl`);
+      fs.appendFileSync(logFile, JSON.stringify(logEntry) + '\n');
+    } catch (e) {
+      console.error('Error logging response:', e);
+    }
+  }
+  return next();
+}
+
+module.exports = {
+  setLightweightPayload,
+  setThumbnailPayload,
+  setMediumPayload,
+  setHeavyPayload,
+  logResponse
+};

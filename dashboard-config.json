@@ -1,0 +1,50 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [ "AWS/Lambda", "Invocations", { "stat": "Sum" } ],
+          [ ".", "Duration", { "stat": "Average" } ],
+          [ ".", "Errors", { "stat": "Sum" } ],
+          [ ".", "Throttles", { "stat": "Sum" } ]
+        ],
+        "period": 300,
+        "stat": "Sum",
+        "region": "eu-west-1",
+        "title": "Lambda Metrics",
+        "yAxis": {
+          "left": {
+            "min": 0
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [ "AWS/ECS", "CPUUtilization", { "stat": "Average" } ],
+          [ ".", "MemoryUtilization", { "stat": "Average" } ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "eu-west-1",
+        "title": "ECS Metrics"
+      }
+    },
+    {
+      "type": "metric",
+      "properties": {
+        "metrics": [
+          [ "AWS/ApplicationELB", "TargetResponseTime", { "stat": "Average" } ],
+          [ ".", "RequestCount", { "stat": "Sum" } ]
+        ],
+        "period": 300,
+        "stat": "Average",
+        "region": "eu-west-1",
+        "title": "ALB Metrics"
+      }
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+config:
+  target: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
+  processor: "./functions.js"
+  phases:
+    - duration: 30  # Just 30 seconds for quick verification
+      arrivalRate: 2
+      name: "Verification test"
+  variables:
+    ecs_base: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
+
+scenarios:
+  # Test just one scenario first
+  - name: "Lightweight Lambda Test"
+    weight: 1
+    flow:
+      - function: "setLightweightPayload"
+      - post:
+          url: "/lightweight"
+          json: "{{ payload }}"
+          afterResponse: "logResponse"

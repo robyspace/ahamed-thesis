@@ -1,0 +1,9 @@
+config:
+  processor: "./functions.js"
+  phases:
+    - duration: 3600  # 1 hour
+      arrivalRate: 5
+      rampTo: 15
+  variables:
+    lambda_base_url: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
+    ecs_base_url: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"

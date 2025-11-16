@@ -1,0 +1,29 @@
+{
+  "family": "hybrid-thesis-medium",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::851974186570:role/ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "app",
+      "image": "851974186570.dkr.ecr.eu-west-1.amazonaws.com/hybrid-thesis-app:latest",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/hybrid-thesis-app",
+          "awslogs-region": "eu-west-1",
+          "awslogs-stream-prefix": "medium"
+        }
+      }
+    }
+  ]
+}
