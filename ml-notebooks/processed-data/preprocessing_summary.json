@@ -15,9 +15,17 @@
     "medium_processing": 36478,
     "heavy_processing": 7709
   },
-  "label_distribution": {
+  "label_distribution_cost": {
+    "1": 116640,
+    "0": 95393
+  },
+  "label_distribution_latency": {
     "1": 212033
   },
-  "total_cost_lambda": 0.39206608405981297,
-  "total_cost_ecs": 1.079484027265228
+  "label_distribution_balanced": {
+    "1": 116640,
+    "0": 95393
+  },
+  "total_cost_lambda": 0.392066084059813,
+  "total_cost_ecs": 1.0794840272652282
 }
