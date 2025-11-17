@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Configuration - MODIFY THESE FOR YOUR NEEDS
-TEST_MODE="short"  # Options: "short" (few hours), "full" (10 days)
+TEST_MODE="full"  # Options: "short" (few hours), "full" (10 days)
 SHORT_TEST_HOURS=3  # For quick testing
-FULL_TEST_DAYS=10   # For full data collection
+FULL_TEST_DAYS=0.25   # For full data collection
 
 API_GATEWAY_URL="jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
 ALB_DNS="hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
@@ -18,7 +18,7 @@ if [ "$TEST_MODE" = "short" ]; then
     echo "Running in SHORT TEST MODE: $SHORT_TEST_HOURS iterations (hours)"
 else
     TOTAL_ITERATIONS=$((24 * FULL_TEST_DAYS))
-    SLEEP_DURATION=3600  # 1 hour between iterations
+    SLEEP_DURATION=600  # 10 mins between iterations
     echo "Running in FULL MODE: $FULL_TEST_DAYS days"
 fi
 
@@ -59,4 +59,4 @@ done
 echo ""
 echo "Data collection complete!"
 echo "Total iterations completed: $TOTAL_ITERATIONS"
-echo "Data files location: ../data-output/"
+echo "Data files location: ../data-output"

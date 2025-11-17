@@ -1,0 +1,8 @@
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T00:11:38.483Z","http_status":500,"response_time_ms":552,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T00:42:24.545Z","http_status":500,"response_time_ms":669,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T00:42:24.582Z","http_status":500,"response_time_ms":2698,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T01:04:06.185Z","http_status":500,"response_time_ms":1225,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T01:23:09.840Z","http_status":500,"response_time_ms":1098,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T01:23:09.885Z","http_status":500,"response_time_ms":1880,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T01:23:09.946Z","http_status":500,"response_time_ms":1101,"metrics":{}}
+{"request_id":"unknown","platform":"unknown","workload_type":"unknown","timestamp":"2025-11-17T01:23:10.067Z","http_status":500,"response_time_ms":1068,"metrics":{}}

@@ -10,8 +10,6 @@ This script:
 4. Generates ground truth labels (optimal platform)
 5. Exports clean dataset for ML training
 
-Author: Ahamed Thesis Project
-Date: November 2025
 """
 
 import pandas as pd
@@ -137,12 +135,12 @@ def load_jsonl_files(data_dir='data-output', platform=None, date_filter=None):
 
     jsonl_files = sorted(data_path.glob(pattern))
 
-    print(f"📁 Found {len(jsonl_files)} JSONL files")
+    print(f" Found {len(jsonl_files)} JSONL files")
 
     for file_path in jsonl_files:
         # Skip undefined files
         if 'undefined' in file_path.name:
-            print(f"⏭️  Skipping: {file_path.name}")
+            print(f" Skipping: {file_path.name}")
             continue
 
         # Apply date filter if specified
@@ -150,7 +148,7 @@ def load_jsonl_files(data_dir='data-output', platform=None, date_filter=None):
             if not any(date in file_path.name for date in date_filter):
                 continue
 
-        print(f"📂 Loading: {file_path.name}")
+        print(f" Loading: {file_path.name}")
 
         # Read JSONL file line by line
         with open(file_path, 'r') as f:
@@ -162,7 +160,7 @@ def load_jsonl_files(data_dir='data-output', platform=None, date_filter=None):
                     continue
 
     df = pd.DataFrame(all_data)
-    print(f"\n✅ Loaded {len(df):,} total requests")
+    print(f"\n Loaded {len(df):,} total requests")
 
     return df
 
@@ -171,7 +169,7 @@ def normalize_metrics(df):
     """
     Normalize nested metrics structure into flat columns
     """
-    print("\n🔄 Normalizing metrics...")
+    print("\n Normalizing metrics...")
 
     # Expand metrics dictionary into separate columns
     metrics_df = pd.json_normalize(df['metrics'])
@@ -183,7 +181,7 @@ def normalize_metrics(df):
     df = df.drop('metrics', axis=1)
     df = pd.concat([df, metrics_df], axis=1)
 
-    print(f"✅ Normalized {len(metrics_df.columns)} metric fields")
+    print(f" Normalized {len(metrics_df.columns)} metric fields")
 
     return df
 
@@ -196,7 +194,7 @@ def engineer_features(df):
     """
     Create additional features for ML models
     """
-    print("\n🛠️  Engineering features...")
+    print("\n  Engineering features...")
 
     # Convert timestamp to datetime
     df['timestamp'] = pd.to_datetime(df['timestamp'])
@@ -224,7 +222,7 @@ def engineer_features(df):
     else:
         df['cold_start'] = 0
 
-    print("✅ Created temporal and categorical features")
+    print(" Created temporal and categorical features")
 
     return df
 
@@ -237,7 +235,7 @@ def add_cost_calculations(df):
     """
     Calculate per-request costs for both platforms
     """
-    print("\n💰 Calculating costs...")
+    print("\n Calculating costs...")
 
     # Separate Lambda and ECS data
     lambda_mask = df['platform'] == 'lambda'
@@ -253,7 +251,7 @@ def add_cost_calculations(df):
             }),
             axis=1
         )
-        print(f"   💵 Calculated Lambda costs: {len(lambda_df):,} requests")
+        print(f"      Calculated Lambda costs: {len(lambda_df):,} requests")
         print(f"      Average: ${lambda_df['cost_usd'].mean():.10f} per request")
         print(f"      Total: ${lambda_df['cost_usd'].sum():.4f}")
 
@@ -267,7 +265,7 @@ def add_cost_calculations(df):
             }),
             axis=1
         )
-        print(f"   💵 Calculated ECS costs: {len(ecs_df):,} requests")
+        print(f"      Calculated ECS costs: {len(ecs_df):,} requests")
         print(f"      Average: ${ecs_df['cost_usd'].mean():.10f} per request")
         print(f"      Total: ${ecs_df['cost_usd'].sum():.4f}")
 
@@ -277,7 +275,7 @@ def add_cost_calculations(df):
     # Remove rows with invalid costs
     df = df.dropna(subset=['cost_usd'])
 
-    print(f"\n✅ Cost calculation complete: {len(df):,} valid requests")
+    print(f"\n Cost calculation complete: {len(df):,} valid requests")
 
     return df
 
@@ -307,7 +305,7 @@ def create_paired_dataset(df, latency_tolerance=1.1, cost_tolerance=1.1):
     Returns:
         DataFrame with paired comparisons and labels
     """
-    print("\n🏷️  Creating ground truth labels...")
+    print("\n Creating ground truth labels...")
     print(f"   Latency tolerance: {(latency_tolerance - 1) * 100:.0f}%")
     print(f"   Cost tolerance: {(cost_tolerance - 1) * 100:.0f}%")
 
@@ -320,7 +318,7 @@ def create_paired_dataset(df, latency_tolerance=1.1, cost_tolerance=1.1):
         lambda_df = workload_df[workload_df['platform'] == 'lambda']
         ecs_df = workload_df[workload_df['platform'] == 'ecs']
 
-        print(f"\n   📊 {workload}:")
+        print(f"\n   {workload}:")
         print(f"      Lambda: {len(lambda_df):,} | ECS: {len(ecs_df):,}")
 
         # Calculate aggregate statistics
@@ -353,8 +351,8 @@ def create_paired_dataset(df, latency_tolerance=1.1, cost_tolerance=1.1):
         optimal_platform = 1 if (latency_ok and cost_ok) else 0
         optimal_platform_name = 'Lambda' if optimal_platform == 1 else 'ECS'
 
-        print(f"      Latency: λ={lambda_latency:.2f}ms vs ECS={ecs_latency:.2f}ms → {'✅' if latency_ok else '❌'}")
-        print(f"      Cost: λ=${lambda_cost:.10f} vs ECS=${ecs_cost:.10f} → {'✅' if cost_ok else '❌'}")
+        print(f"      Latency: λ={lambda_latency:.2f}ms vs ECS={ecs_latency:.2f}ms → {'OK' if latency_ok else 'KO'}")
+        print(f"      Cost: λ=${lambda_cost:.10f} vs ECS=${ecs_cost:.10f} → {'OK' if cost_ok else 'KO'}")
         print(f"      → Optimal: {optimal_platform_name}")
 
         # Create paired records (sample-based approach for training)
@@ -418,7 +416,7 @@ def create_paired_dataset(df, latency_tolerance=1.1, cost_tolerance=1.1):
 
     paired_df = pd.DataFrame(paired_data)
 
-    print(f"\n✅ Created {len(paired_df):,} paired training samples")
+    print(f"\n Created {len(paired_df):,} paired training samples")
     print(f"   Label distribution:")
     print(f"      Lambda optimal (1): {(paired_df['optimal_platform'] == 1).sum():,} ({(paired_df['optimal_platform'] == 1).mean() * 100:.1f}%)")
     print(f"      ECS optimal (0): {(paired_df['optimal_platform'] == 0).sum():,} ({(paired_df['optimal_platform'] == 0).mean() * 100:.1f}%)")
@@ -485,12 +483,12 @@ def main():
     # Save full processed data
     full_output_path = f"{OUTPUT_DIR}/full_processed_data.csv"
     df.to_csv(full_output_path, index=False)
-    print(f"💾 Saved full data: {full_output_path} ({len(df):,} rows)")
+    print(f" Saved full data: {full_output_path} ({len(df):,} rows)")
 
     # Save paired training data
     paired_output_path = f"{OUTPUT_DIR}/ml_training_data.csv"
     paired_df.to_csv(paired_output_path, index=False)
-    print(f"💾 Saved ML training data: {paired_output_path} ({len(paired_df):,} rows)")
+    print(f" Saved ML training data: {paired_output_path} ({len(paired_df):,} rows)")
 
     # Save summary statistics
     summary = {
@@ -507,20 +505,20 @@ def main():
     summary_path = f"{OUTPUT_DIR}/preprocessing_summary.json"
     with open(summary_path, 'w') as f:
         json.dump(summary, f, indent=2)
-    print(f"💾 Saved summary: {summary_path}")
+    print(f" Saved summary: {summary_path}")
 
     print("\n" + "=" * 80)
-    print("✅ PREPROCESSING COMPLETE!")
+    print(" PREPROCESSING COMPLETE!")
     print("=" * 80)
-    print(f"\n📊 Summary:")
+    print(f"\n Summary:")
     print(f"   Total requests processed: {len(df):,}")
     print(f"   ML training samples: {len(paired_df):,}")
     print(f"   Features ready for model training")
-    print(f"\n📁 Output files:")
+    print(f"\n Output files:")
     print(f"   1. {full_output_path}")
     print(f"   2. {paired_output_path}")
     print(f"   3. {summary_path}")
-    print(f"\n🚀 Next step: Upload to Google Colab and start model training!")
+    print(f"\n Next step: Upload to Google Colab and start model training!")
 
 
 if __name__ == '__main__':

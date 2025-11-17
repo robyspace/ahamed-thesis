@@ -2,8 +2,8 @@ config:
   target: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
   processor: "./functions.js"
   phases:
-    - duration: 600  # 10 mins continuous testing
-      arrivalRate: 5 # 10
+    - duration: 21600  # 10 mins continuous testing
+      arrivalRate: 10 # 10
       name: "Sustained load"
   variables:
     ecs_base: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
