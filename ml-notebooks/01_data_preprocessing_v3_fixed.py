@@ -164,37 +164,53 @@ def create_request_level_labels(df, payload_bins=5):
         print(f"    {workload}:")
         print(f"      Lambda: {len(lambda_df):,} | ECS: {len(ecs_df):,}")
 
-        # Create payload size bins
+        # Create payload size bins using quantile-based binning
+        # pd.qcut automatically handles duplicate edge values
         all_payloads = pd.concat([
             lambda_df['metric_payload_size_kb'],
             ecs_df['metric_payload_size_kb']
         ])
 
-        # Define bin edges using quintiles
-        bin_edges = [0] + all_payloads.quantile([0.2, 0.4, 0.6, 0.8, 1.0]).tolist()
-        bin_labels = list(range(payload_bins))
+        # Assign bins to Lambda and ECS data using qcut (quantile cut)
+        try:
+            lambda_df['payload_bin'] = pd.qcut(
+                lambda_df['metric_payload_size_kb'],
+                q=payload_bins,
+                labels=False,
+                duplicates='drop'
+            )
+        except ValueError:
+            # If not enough unique values for 5 bins, use fewer bins
+            lambda_df['payload_bin'] = pd.qcut(
+                lambda_df['metric_payload_size_kb'],
+                q=min(payload_bins, lambda_df['metric_payload_size_kb'].nunique()),
+                labels=False,
+                duplicates='drop'
+            )
 
-        # Assign bins to Lambda and ECS data
-        lambda_df['payload_bin'] = pd.cut(
-            lambda_df['metric_payload_size_kb'],
-            bins=bin_edges,
-            labels=bin_labels,
-            include_lowest=True,
-            duplicates='drop'
-        )
-
-        ecs_df['payload_bin'] = pd.cut(
-            ecs_df['metric_payload_size_kb'],
-            bins=bin_edges,
-            labels=bin_labels,
-            include_lowest=True,
-            duplicates='drop'
-        )
+        try:
+            ecs_df['payload_bin'] = pd.qcut(
+                ecs_df['metric_payload_size_kb'],
+                q=payload_bins,
+                labels=False,
+                duplicates='drop'
+            )
+        except ValueError:
+            # If not enough unique values for 5 bins, use fewer bins
+            ecs_df['payload_bin'] = pd.qcut(
+                ecs_df['metric_payload_size_kb'],
+                q=min(payload_bins, ecs_df['metric_payload_size_kb'].nunique()),
+                labels=False,
+                duplicates='drop'
+            )
 
         # For each bin, determine optimal platform
         bin_labels_map = {}
 
-        for bin_id in range(payload_bins):
+        # Get actual unique bins (might be less than payload_bins if duplicates were dropped)
+        actual_bins = sorted(pd.concat([lambda_df['payload_bin'], ecs_df['payload_bin']]).dropna().unique())
+
+        for bin_id in actual_bins:
             lambda_bin = lambda_df[lambda_df['payload_bin'] == bin_id]
             ecs_bin = ecs_df[ecs_df['payload_bin'] == bin_id]
 

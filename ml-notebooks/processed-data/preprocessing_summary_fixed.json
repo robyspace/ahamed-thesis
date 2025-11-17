@@ -1,0 +1,20 @@
+{
+  "total_requests": 212033,
+  "total_training_samples": 212033,
+  "date_range": [
+    "2025-11-16",
+    "2025-11-17"
+  ],
+  "label_distribution_cost": {
+    "1": 160069,
+    "0": 51964
+  },
+  "label_distribution_latency": {
+    "1": 160808,
+    "0": 51225
+  },
+  "label_distribution_balanced": {
+    "1": 156201,
+    "0": 55832
+  }
+}
