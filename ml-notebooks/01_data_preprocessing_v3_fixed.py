@@ -69,7 +69,7 @@ def load_jsonl_files(data_dir='data-output', date_filter=None):
         if date_filter and not any(date in file_path.name for date in date_filter):
             continue
 
-        print(f"📂 Loading: {file_path.name}")
+        print(f" Loading: {file_path.name}")
         with open(file_path, 'r') as f:
             for line in f:
                 try:
@@ -78,7 +78,7 @@ def load_jsonl_files(data_dir='data-output', date_filter=None):
                     continue
 
     df = pd.DataFrame(all_data)
-    print(f"✅ Loaded {len(df):,} total requests\n")
+    print(f" Loaded {len(df):,} total requests\n")
     return df
 
 def normalize_metrics(df):
@@ -111,7 +111,7 @@ def engineer_features(df):
     return df
 
 def add_cost_calculations(df):
-    print("💰 Calculating costs...")
+    print(" Calculating costs...")
 
     lambda_df = df[df['platform'] == 'lambda'].copy()
     if len(lambda_df) > 0:
@@ -135,7 +135,7 @@ def add_cost_calculations(df):
 
     df = pd.concat([lambda_df, ecs_df], axis=0)
     df = df.dropna(subset=['cost_usd'])
-    print(f"✅ Total: {len(df):,} requests with costs\n")
+    print(f" Total: {len(df):,} requests with costs\n")
     return df
 
 def create_request_level_labels(df, payload_bins=5):
@@ -150,7 +150,7 @@ def create_request_level_labels(df, payload_bins=5):
     3. Assign labels based on workload + payload_size_bin combination
     4. This creates ~20 combinations (4 workloads × 5 bins) instead of just 4
     """
-    print("🏷️  Creating REQUEST-LEVEL labels with payload binning...")
+    print("  Creating REQUEST-LEVEL labels with payload binning...")
     print(f"   Using {payload_bins} payload size bins per workload\n")
 
     paired_data = []
@@ -161,7 +161,7 @@ def create_request_level_labels(df, payload_bins=5):
         lambda_df = workload_df[workload_df['platform'] == 'lambda']
         ecs_df = workload_df[workload_df['platform'] == 'ecs']
 
-        print(f"   📊 {workload}:")
+        print(f"    {workload}:")
         print(f"      Lambda: {len(lambda_df):,} | ECS: {len(ecs_df):,}")
 
         # Create payload size bins using quantile-based binning
@@ -303,8 +303,8 @@ def create_request_level_labels(df, payload_bins=5):
 
     paired_df = pd.DataFrame(paired_data)
 
-    print(f"\n✅ Created {len(paired_df):,} paired samples with request-level labels")
-    print(f"\n   📊 Label distributions:")
+    print(f"\n Created {len(paired_df):,} paired samples with request-level labels")
+    print(f"\n   Label distributions:")
 
     for label_col in ['cost_optimal', 'latency_optimal', 'balanced_optimal']:
         counts = paired_df[label_col].value_counts()
@@ -313,7 +313,7 @@ def create_request_level_labels(df, payload_bins=5):
         print(f"        ECS (0):    {counts.get(0, 0):,} ({counts.get(0, 0) / len(paired_df) * 100:.1f}%)")
 
     # Check label variance by workload
-    print(f"\n   📊 Label variance by workload (balanced_optimal):")
+    print(f"\n   Label variance by workload (balanced_optimal):")
     variance_check = paired_df.groupby('workload_type')['balanced_optimal'].agg(['mean', 'std', 'count'])
     print(variance_check)
 
@@ -340,11 +340,11 @@ def main():
     # Save outputs
     full_output_path = f"{OUTPUT_DIR}/full_processed_data.csv"
     df.to_csv(full_output_path, index=False)
-    print(f"\n💾 Saved: {full_output_path}")
+    print(f"\n Saved: {full_output_path}")
 
     paired_output_path = f"{OUTPUT_DIR}/ml_training_data_fixed.csv"
     paired_df.to_csv(paired_output_path, index=False)
-    print(f"💾 Saved: {paired_output_path}")
+    print(f" Saved: {paired_output_path}")
 
     summary = {
         'total_requests': len(df),
@@ -359,16 +359,16 @@ def main():
     summary_path = f"{OUTPUT_DIR}/preprocessing_summary_fixed.json"
     with open(summary_path, 'w') as f:
         json.dump(summary, f, indent=2)
-    print(f"💾 Saved: {summary_path}")
+    print(f" Saved: {summary_path}")
 
     print("\n" + "=" * 80)
-    print("✅ PREPROCESSING COMPLETE!")
+    print(" PREPROCESSING COMPLETE!")
     print("=" * 80)
-    print(f"\n🎯 Key Improvement:")
+    print(f"\n Key Improvement:")
     print(f"   Unique (workload, label) combinations: {summary['unique_combinations']}")
     print(f"   (Previously: 4 combinations → 100% accuracy)")
     print(f"   (Now: {summary['unique_combinations']} combinations → Model must learn patterns!)")
-    print(f"\n📁 Upload to Colab: {paired_output_path}")
+    print(f"\n Upload to Colab: {paired_output_path}")
 
 if __name__ == '__main__':
     main()
