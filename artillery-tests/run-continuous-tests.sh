@@ -9,7 +9,7 @@ API_GATEWAY_URL="jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
 ALB_DNS="hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
 
 # Create output directory
-mkdir -p ../data-output-full
+mkdir -p ../data-output
 
 # Determine test duration
 if [ "$TEST_MODE" = "short" ]; then
@@ -59,4 +59,4 @@ done
 echo ""
 echo "Data collection complete!"
 echo "Total iterations completed: $TOTAL_ITERATIONS"
-echo "Data files location: ../data-output-full/"
+echo "Data files location: ../data-output"
