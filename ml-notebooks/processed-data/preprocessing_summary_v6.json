@@ -1,0 +1,33 @@
+{
+  "total_requests": 212033,
+  "total_training_samples": 212033,
+  "date_range": [
+    "2025-11-16",
+    "2025-11-17"
+  ],
+  "num_features": 15,
+  "feature_columns": [
+    "workload_type_encoded",
+    "payload_size_kb",
+    "hour_of_day",
+    "day_of_week",
+    "is_weekend",
+    "lambda_memory_limit_mb",
+    "payload_squared",
+    "payload_log",
+    "payload_category",
+    "hour_period",
+    "workload_payload_interaction",
+    "workload_memory_interaction",
+    "memory_payload_interaction",
+    "workload_hour_interaction",
+    "payload_memory_ratio"
+  ],
+  "labeling_method": "percentile_based_with_margins",
+  "latency_margin": 0.1,
+  "cost_margin": 0.1,
+  "label_distribution_balanced": {
+    "1": 134472,
+    "0": 77561
+  }
+}
