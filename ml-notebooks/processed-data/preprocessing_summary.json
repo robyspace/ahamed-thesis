@@ -1,0 +1,31 @@
+{
+  "total_requests": 212033,
+  "total_training_samples": 212033,
+  "date_range": [
+    "2025-11-16",
+    "2025-11-17"
+  ],
+  "platforms": {
+    "ecs": 106238,
+    "lambda": 105795
+  },
+  "workload_types": {
+    "lightweight_api": 95393,
+    "thumbnail_processing": 72453,
+    "medium_processing": 36478,
+    "heavy_processing": 7709
+  },
+  "label_distribution_cost": {
+    "1": 116640,
+    "0": 95393
+  },
+  "label_distribution_latency": {
+    "1": 212033
+  },
+  "label_distribution_balanced": {
+    "1": 116640,
+    "0": 95393
+  },
+  "total_cost_lambda": 0.392066084059813,
+  "total_cost_ecs": 1.0794840272652282
+}
