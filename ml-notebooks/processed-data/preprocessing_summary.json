@@ -1,0 +1,23 @@
+{
+  "total_requests": 212033,
+  "total_training_samples": 212033,
+  "date_range": [
+    "2025-11-16",
+    "2025-11-17"
+  ],
+  "platforms": {
+    "ecs": 106238,
+    "lambda": 105795
+  },
+  "workload_types": {
+    "lightweight_api": 95393,
+    "thumbnail_processing": 72453,
+    "medium_processing": 36478,
+    "heavy_processing": 7709
+  },
+  "label_distribution": {
+    "1": 212033
+  },
+  "total_cost_lambda": 0.39206608405981297,
+  "total_cost_ecs": 1.079484027265228
+}
