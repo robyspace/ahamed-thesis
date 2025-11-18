@@ -1,0 +1,108 @@
+Test run id: thtrn_n8chfenp9mbnq85zdqrrktjrqm8k6_94ww
+Phase started: Quick validation - 1 minute (index: 0, duration: 60s) 06:14:06(+0000)
+
+--------------------------------------
+Metrics for period to: 06:14:10(+0000) (width: 2.051s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 6
+vusers.created: ................................................................ 6
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 1
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 1
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 4
+vusers.failed: ................................................................. 6
+
+
+--------------------------------------
+Metrics for period to: 06:14:20(+0000) (width: 9.052s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 3
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 5
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 8
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 4
+vusers.failed: ................................................................. 20
+
+
+--------------------------------------
+Metrics for period to: 06:14:30(+0000) (width: 9.052s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 6
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 4
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 5
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 5
+vusers.failed: ................................................................. 20
+
+
+--------------------------------------
+Metrics for period to: 06:14:40(+0000) (width: 9.052s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 4
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 5
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 5
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 6
+vusers.failed: ................................................................. 20
+
+
+--------------------------------------
+Metrics for period to: 06:14:50(+0000) (width: 9.052s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 1
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 5
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 8
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 6
+vusers.failed: ................................................................. 20
+
+
+--------------------------------------
+Metrics for period to: 06:15:00(+0000) (width: 9.052s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 20
+vusers.created: ................................................................ 20
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 6
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 6
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 5
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 3
+vusers.failed: ................................................................. 20
+
+
+Phase completed: Quick validation - 1 minute (index: 0, duration: 60s) 06:15:06(+0000)
+
+--------------------------------------
+Metrics for period to: 06:15:10(+0000) (width: 6.053s)
+--------------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 14
+vusers.created: ................................................................ 14
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 2
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 6
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 3
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 3
+vusers.failed: ................................................................. 14
+
+
+All VUs finished. Total time: 1 minute, 1 second
+
+--------------------------------
+Summary report @ 06:15:08(+0000)
+--------------------------------
+
+errors.Cannot read properties of undefined (reading 'load_pattern'): ........... 120
+vusers.created: ................................................................ 120
+vusers.created_by_name.Lightweight ECS - Variance: ............................. 23
+vusers.created_by_name.Lightweight Lambda - Variance: .......................... 32
+vusers.created_by_name.Thumbnail ECS - Variance: ............................... 34
+vusers.created_by_name.Thumbnail Lambda - Variance: ............................ 31
+vusers.failed: ................................................................. 120
