@@ -1,0 +1,103 @@
+config:
+  target: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
+  processor: "./variance-functions.js"
+  phases:
+    - duration: 600   # 10 minutes baseline
+      arrivalRate: 5
+      name: "Burst - baseline"
+    - duration: 300   # 5 minutes spike
+      arrivalRate: 30
+      name: "Burst - spike"
+    - duration: 300   # 5 minutes cool down
+      arrivalRate: 5
+      name: "Burst - cool down"
+  variables:
+    ecs_base: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
+    load_pattern: "burst_load"
+
+scenarios:
+  # Equal weight distribution: 12.5% each (8 scenarios × 12.5% = 100%)
+
+  # ============================================
+  # LIGHTWEIGHT API WORKLOAD
+  # ============================================
+  - name: "Lightweight Lambda - Variance"
+    weight: 12.5
+    flow:
+      - function: "setLightweightVariancePayload"
+      - post:
+          url: "/lightweight"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Lightweight ECS - Variance"
+    weight: 12.5
+    flow:
+      - function: "setLightweightVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/lightweight/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  # ============================================
+  # THUMBNAIL PROCESSING WORKLOAD
+  # ============================================
+  - name: "Thumbnail Lambda - Variance"
+    weight: 12.5
+    flow:
+      - function: "setThumbnailVariancePayload"
+      - post:
+          url: "/thumbnail"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Thumbnail ECS - Variance"
+    weight: 12.5
+    flow:
+      - function: "setThumbnailVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/thumbnail/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  # ============================================
+  # MEDIUM PROCESSING WORKLOAD
+  # ============================================
+  - name: "Medium Lambda - Variance"
+    weight: 12.5
+    flow:
+      - function: "setMediumVariancePayload"
+      - post:
+          url: "/medium"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Medium ECS - Variance"
+    weight: 12.5
+    flow:
+      - function: "setMediumVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/medium/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  # ============================================
+  # HEAVY PROCESSING WORKLOAD
+  # ============================================
+  - name: "Heavy Lambda - Variance"
+    weight: 12.5
+    flow:
+      - function: "setHeavyVariancePayload"
+      - post:
+          url: "/heavy"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Heavy ECS - Variance"
+    weight: 12.5
+    flow:
+      - function: "setHeavyVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/heavy/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"

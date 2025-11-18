@@ -1,0 +1,48 @@
+config:
+  target: "https://jt67vt5uwj.execute-api.eu-west-1.amazonaws.com/prod"
+  processor: "./variance-functions.js"
+  phases:
+    - duration: 60  # 1 minute for quick validation
+      arrivalRate: 2  # 2 requests per second
+      name: "Quick validation - 1 minute"
+  variables:
+    ecs_base: "http://hybrid-thesis-alb-811686247.eu-west-1.elb.amazonaws.com"
+    load_pattern: "quick_validation"
+
+scenarios:
+  # Just test lightweight and thumbnail for quick validation
+  - name: "Lightweight Lambda - Variance"
+    weight: 25
+    flow:
+      - function: "setLightweightVariancePayload"
+      - post:
+          url: "/lightweight"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Lightweight ECS - Variance"
+    weight: 25
+    flow:
+      - function: "setLightweightVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/lightweight/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Thumbnail Lambda - Variance"
+    weight: 25
+    flow:
+      - function: "setThumbnailVariancePayload"
+      - post:
+          url: "/thumbnail"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
+
+  - name: "Thumbnail ECS - Variance"
+    weight: 25
+    flow:
+      - function: "setThumbnailVariancePayload"
+      - post:
+          url: "{{ ecs_base }}/thumbnail/process"
+          json: "{{ payload }}"
+          afterResponse: "logDetailedResponse"
