@@ -216,7 +216,17 @@ function logDetailedResponse(requestParams, response, userContext, events, done)
       return done();
     }
 
-    const data = JSON.parse(response.body);
+    // Try to parse JSON, skip logging if it's not JSON (HTML error page, etc.)
+    let data;
+    try {
+      data = JSON.parse(response.body);
+    } catch (parseError) {
+      // Response is not JSON (likely HTML error page or plain text)
+      // Log minimal info and skip detailed logging
+      console.warn(`Non-JSON response (status ${response.statusCode}): ${response.body.substring(0, 100)}...`);
+      return done();
+    }
+
     const requestPayload = userContext.vars.payload;
 
     // Extract metadata with safe fallbacks
