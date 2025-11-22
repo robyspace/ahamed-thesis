@@ -55,15 +55,15 @@ run_test() {
 }
 
 # Display schedule
-echo -e "${BLUE}📅 TEST SCHEDULE:${NC}"
+echo -e "${BLUE} TEST SCHEDULE:${NC}"
 echo ""
 echo "1. Early Morning (2-3 AM)   → Low Load      (variance-test-low-load.yml)"
 echo "2. Morning Peak (8-9 AM)    → Ramp Load     (variance-test-ramp-load.yml)"
 echo "3. Midday (12-1 PM)         → Medium Load   (variance-test-medium-load.yml)"
-echo "4. Evening (6-7 PM)         → Burst Load    (variance-test-burst-load.yml)"
+echo "4. Evening (5-6 PM)         → Burst Load    (variance-test-burst-load.yml)"
 echo "5. Late Night (10-11 PM)    → Low Load      (variance-test-low-load.yml)"
 echo ""
-echo -e "${YELLOW}⚠️  IMPORTANT: Run each test during its designated time window!${NC}"
+echo -e "${YELLOW}  IMPORTANT: Run each test during its designated time window!${NC}"
 echo ""
 
 # Check current time and suggest which test to run
@@ -78,29 +78,29 @@ if [ $current_hour -ge 2 ] && [ $current_hour -lt 4 ]; then
   suggested_test="variance-test-low-load.yml"
   suggested_name="Test 1: Early Morning - Low Load"
   suggested_window="early_morning"
-  echo -e "${GREEN}🕐 Current time suggests: Test 1 (Early Morning - Low Load)${NC}"
+  echo -e "${GREEN} Current time suggests: Test 1 (Early Morning - Low Load)${NC}"
 elif [ $current_hour -ge 8 ] && [ $current_hour -lt 10 ]; then
   suggested_test="variance-test-ramp-load.yml"
   suggested_name="Test 2: Morning Peak - Ramp Load"
   suggested_window="morning_peak"
-  echo -e "${GREEN}🕐 Current time suggests: Test 2 (Morning Peak - Ramp Load)${NC}"
+  echo -e "${GREEN} Current time suggests: Test 2 (Morning Peak - Ramp Load)${NC}"
 elif [ $current_hour -ge 12 ] && [ $current_hour -lt 14 ]; then
   suggested_test="variance-test-medium-load.yml"
   suggested_name="Test 3: Midday - Medium Load"
   suggested_window="midday"
-  echo -e "${GREEN}🕐 Current time suggests: Test 3 (Midday - Medium Load)${NC}"
-elif [ $current_hour -ge 18 ] && [ $current_hour -lt 20 ]; then
+  echo -e "${GREEN} Current time suggests: Test 3 (Midday - Medium Load)${NC}"
+elif [ $current_hour -ge 17 ] && [ $current_hour -lt 19 ]; then
   suggested_test="variance-test-burst-load.yml"
   suggested_name="Test 4: Evening - Burst Load"
   suggested_window="evening"
-  echo -e "${GREEN}🕐 Current time suggests: Test 4 (Evening - Burst Load)${NC}"
-elif [ $current_hour -ge 22 ] || [ $current_hour -lt 1 ]; then
+  echo -e "${GREEN} Current time suggests: Test 4 (Evening - Burst Load)${NC}"
+elif [ $current_hour -ge 22 ] || [ $current_hour -lt 24 ]; then
   suggested_test="variance-test-low-load.yml"
   suggested_name="Test 5: Late Night - Low Load"
   suggested_window="late_night"
-  echo -e "${GREEN}🕐 Current time suggests: Test 5 (Late Night - Low Load)${NC}"
+  echo -e "${GREEN} Current time suggests: Test 5 (Late Night - Low Load)${NC}"
 else
-  echo -e "${YELLOW}⚠️  Current time (${current_hour}:00) is not in a designated test window${NC}"
+  echo -e "${YELLOW}  Current time (${current_hour}:00) is not in a designated test window${NC}"
   echo "    Please run tests during scheduled windows for best variance"
   echo ""
   echo "Available test files:"
