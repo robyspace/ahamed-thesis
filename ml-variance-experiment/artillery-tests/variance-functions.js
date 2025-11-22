@@ -49,11 +49,11 @@ function generateRequestId() {
  */
 function getCurrentTimeWindow() {
   const hour = new Date().getHours();
-  if (hour >= 2 && hour < 4) return 'early_morning';
+  if (hour >= 1 && hour < 4) return 'early_morning';
   if (hour >= 8 && hour < 10) return 'morning_peak';
   if (hour >= 12 && hour < 14) return 'midday';
-  if (hour >= 18 && hour < 20) return 'evening';
-  if (hour >= 22 || hour < 1) return 'late_night';
+  if (hour >= 17 && hour < 19) return 'evening';
+  if (hour >= 22 || hour < 24) return 'late_night';
   return 'other';
 }
 
