@@ -19,12 +19,12 @@ const PAYLOAD_VARIANCE_CONFIGS = {
     generateBase64: true
   },
   medium_processing: {
-    sizes_kb: [1024, 2048, 3072, 5120],
+    sizes_kb: [1024, 2048, 3072, 4096],  // Reduced max from 5120 to 4096 KB
     distribution: 'uniform',
     generateBase64: true
   },
   heavy_processing: {
-    sizes_kb: [3072, 5120, 8192, 10240],
+    sizes_kb: [2048, 3072, 4096, 5120],  // Reduced from [3072, 5120, 8192, 10240]
     distribution: 'uniform',
     generateBase64: true
   }
