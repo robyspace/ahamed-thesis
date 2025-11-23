@@ -1,0 +1,5 @@
+workload,total_requests,lambda_optimal_count,lambda_optimal_pct
+heavy_processing,6445,3689,57.23816912335143
+lightweight_api,37413,17657,47.19482532809452
+medium_processing,12277,11798,96.09839537346258
+thumbnail_processing,32026,23999,74.93598950852433
