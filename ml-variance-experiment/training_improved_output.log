@@ -53,3 +53,155 @@ Balanced training distribution:
 
 🔍 Tuning Neural Network (this may take 5-10 minutes)...
 Fitting 5 folds for each of 108 candidates, totalling 540 fits
+
+✅ Best Neural Network parameters:
+   alpha: 0.0001
+   batch_size: 128
+   hidden_layer_sizes: (128, 64)
+   learning_rate_init: 0.005
+   Best CV score: 0.6743
+
+================================================================================
+6. TRAINING IMPROVED MODELS
+================================================================================
+
+================================================================================
+Training: Neural Network (Tuned)
+================================================================================
+Using pre-trained model from GridSearch...
+
+📊 Results:
+  Train Accuracy:  0.6644 (66.44%)
+  Val Accuracy:    0.6568 (65.68%)
+  Test Accuracy:   0.6606 (66.06%)
+  Precision:       0.7966
+  Recall:          0.6396
+  F1-Score:        0.7095
+  ROC-AUC:         0.6922
+  Train-Test Gap:  0.0038
+  ❌ Below target: 66.1% (need 75%)
+
+================================================================================
+Training: Random Forest (Improved)
+================================================================================
+Fitting model...
+
+📊 Results:
+  Train Accuracy:  0.6620 (66.20%)
+  Val Accuracy:    0.6562 (65.62%)
+  Test Accuracy:   0.6515 (65.15%)
+  Precision:       0.8318
+  Recall:          0.5795
+  F1-Score:        0.6831
+  ROC-AUC:         0.7427
+  Train-Test Gap:  0.0105
+  ❌ Below target: 65.2% (need 75%)
+
+================================================================================
+Training: XGBoost (Improved)
+================================================================================
+Fitting model...
+
+📊 Results:
+  Train Accuracy:  0.6086 (60.86%)
+  Val Accuracy:    0.6042 (60.42%)
+  Test Accuracy:   0.6030 (60.30%)
+  Precision:       0.9140
+  Recall:          0.4277
+  F1-Score:        0.5827
+  ROC-AUC:         0.7428
+  Train-Test Gap:  0.0056
+  ❌ Below target: 60.3% (need 75%)
+
+================================================================================
+Training: LightGBM (Improved)
+================================================================================
+Fitting model...
+
+📊 Results:
+  Train Accuracy:  0.6620 (66.20%)
+  Val Accuracy:    0.6562 (65.62%)
+  Test Accuracy:   0.6516 (65.16%)
+  Precision:       0.8318
+  Recall:          0.5796
+  F1-Score:        0.6832
+  ROC-AUC:         0.7427
+  Train-Test Gap:  0.0104
+  ❌ Below target: 65.2% (need 75%)
+
+================================================================================
+Training: Gradient Boosting
+================================================================================
+Fitting model...
+
+📊 Results:
+  Train Accuracy:  0.6620 (66.20%)
+  Val Accuracy:    0.6562 (65.62%)
+  Test Accuracy:   0.6516 (65.16%)
+  Precision:       0.8318
+  Recall:          0.5796
+  F1-Score:        0.6832
+  ROC-AUC:         0.7427
+  Train-Test Gap:  0.0104
+  ❌ Below target: 65.2% (need 75%)
+
+================================================================================
+7. CREATING ENSEMBLE MODEL
+================================================================================
+
+Creating Voting Classifier (combines all models)...
+Training ensemble...
+
+📊 Ensemble Results:
+  Test Accuracy:   0.6285 (62.85%)
+  Precision:       0.8751
+  Recall:          0.4979
+  F1-Score:        0.6347
+  ROC-AUC:         0.7435
+  ⚠️  Ensemble: 62.9% (target: 75%)
+
+================================================================================
+8. MODEL COMPARISON
+================================================================================
+
+
+                   Model  Train Acc  Val Acc  Test Acc  Precision   Recall  F1-Score  ROC-AUC  Train-Test Gap
+  Neural Network (Tuned)   0.664379 0.656817  0.660580   0.796643 0.639601  0.709537 0.692166        0.003800
+     LightGBM (Improved)   0.661997 0.656250  0.651562   0.831847 0.579578  0.683168 0.742695        0.010435
+       Gradient Boosting   0.661997 0.656250  0.651562   0.831847 0.579578  0.683168 0.742742        0.010435
+Random Forest (Improved)   0.661978 0.656250  0.651506   0.831826 0.579491  0.683100 0.742685        0.010473
+   Ensemble (All Models)   0.634301 0.628516  0.628537   0.875135 0.497944  0.634731 0.743542        0.005764
+      XGBoost (Improved)   0.608609 0.604186  0.602960   0.913987 0.427684  0.582703 0.742844        0.005649
+
+🏆 Best Model: Neural Network (Tuned)
+   Test Accuracy: 0.6606 (66.06%)
+
+⚠️  Still below target (66.1% vs 75%)
+   Consider: more data collection, additional features, or different approach
+
+================================================================================
+9. SAVING BEST MODEL
+================================================================================
+✅ Model saved: models/variance_model_improved.pkl
+✅ Features saved: models/feature_columns_improved.json
+✅ Metadata saved: models/model_metadata_improved.json
+
+================================================================================
+TRAINING COMPLETE
+================================================================================
+
+📊 Improvements vs Previous Version:
+   Previous best:  69.59% (Neural Network)
+   Current best:   66.06% (Neural Network (Tuned))
+   Improvement:    -3.53%
+
+⚠️  Accuracy: 66.1% (target: 75%)
+   Recommend: review results and decide if acceptable
+
+🚀 Next Steps:
+   1. Review detailed results
+   2. If satisfied, deploy to AWS Lambda
+   3. Run comparative evaluation
+   4. Measure real-world performance
+
+✅ Done! End time: 2025-11-24 09:06:25

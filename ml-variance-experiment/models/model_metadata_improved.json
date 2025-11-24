@@ -1,0 +1,46 @@
+{
+  "model_type": "Neural Network (Tuned)",
+  "training_date": "2025-11-24T09:06:25.240251",
+  "num_features": 25,
+  "feature_columns": [
+    "workload_type_encoded",
+    "payload_size_kb",
+    "time_window_encoded",
+    "load_pattern_encoded",
+    "hour_of_day",
+    "is_weekend",
+    "lambda_memory_limit_mb",
+    "payload_squared",
+    "payload_log",
+    "payload_workload_interaction",
+    "payload_hour_interaction",
+    "payload_time_window_interaction",
+    "workload_time_window_interaction",
+    "payload_load_pattern_interaction",
+    "time_window_load_pattern_interaction",
+    "payload_cubed",
+    "payload_sqrt",
+    "payload_inv",
+    "memory_payload_interaction",
+    "memory_workload_interaction",
+    "three_way_interaction",
+    "payload_bin",
+    "hour_bin",
+    "payload_per_memory",
+    "payload_zscore"
+  ],
+  "improvements": [
+    "Advanced feature engineering (25 features)",
+    "SMOTE class balancing",
+    "Hyperparameter tuning (GridSearchCV)",
+    "Better model configurations",
+    "Ensemble voting classifier"
+  ],
+  "performance": {
+    "test_accuracy": 0.6605795950774117,
+    "precision": 0.7966434176111595,
+    "recall": 0.6396010149619389,
+    "f1_score": 0.7095365202620724,
+    "roc_auc": 0.6921660086360559
+  }
+}
