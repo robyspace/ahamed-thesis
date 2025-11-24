@@ -167,7 +167,7 @@ def predict_platform(features, model, feature_columns):
 
 def calculate_inference_cost(execution_time_ms, memory_mb=512):
     """Calculate the cost of this Lambda inference"""
-    memory_gb = memory_mb / 1024
+    memory_gb = float(memory_mb) / 1024
     execution_time_sec = execution_time_ms / 1000
     duration_cost = memory_gb * execution_time_sec * LAMBDA_DURATION_COST_PER_GB_SEC
     total_cost = duration_cost + LAMBDA_REQUEST_COST
@@ -271,19 +271,26 @@ def lambda_handler(event, context):
     except Exception as e:
         # Error handling with fallback
         print(f"Error during inference: {str(e)}")
+        import traceback
+        traceback.print_exc()
 
         # Fallback: simple heuristic routing
         fallback_platform = 'lambda'  # Default to Lambda for unknown cases
 
-        if 'workload_type' in request_data:
-            workload = request_data['workload_type']
-            payload = request_data.get('payload_size_kb', 1.0)
+        # Try to get request_data if it was parsed successfully
+        try:
+            if 'workload_type' in request_data:
+                workload = request_data['workload_type']
+                payload = request_data.get('payload_size_kb', 1.0)
 
-            # Simple fallback logic
-            if workload == 'lightweight_api' and payload > 7:
-                fallback_platform = 'ecs'
-            elif workload == 'heavy_processing' and payload > 8000:
-                fallback_platform = 'ecs'
+                # Simple fallback logic
+                if workload == 'lightweight_api' and payload > 7:
+                    fallback_platform = 'ecs'
+                elif workload == 'heavy_processing' and payload > 8000:
+                    fallback_platform = 'ecs'
+        except:
+            # request_data not available, use default fallback
+            pass
 
         return {
             'statusCode': 500,
@@ -311,7 +318,7 @@ if __name__ == '__main__':
             'load_pattern': 'low_load'
         },
         {
-            'workload_type': 'lightweight_api',
+            'workload_type': 'medium_processing',
             'payload_size_kb': 10.0,
             'time_window': 'early_morning',
             'load_pattern': 'low_load'

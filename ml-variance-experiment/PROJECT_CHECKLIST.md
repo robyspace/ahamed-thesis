@@ -90,7 +90,7 @@
   ```bash
   node -e "
   const funcs = require('./variance-functions.js');
-  const testPayload = funcs.generateVariancePayload('lightweight_api', 'low_load');
+  const testPayload = funcs.generateVariancePayload('medium_processing', 'ramp_load');
   console.log(JSON.stringify(testPayload, null, 2));
   "
   ```
